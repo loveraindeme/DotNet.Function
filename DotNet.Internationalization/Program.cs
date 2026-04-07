@@ -9,6 +9,8 @@ namespace DotNet.Internationalization
             // Add services to the container.
             builder.Services.AddRazorPages();
 
+            builder.Services.AddInternationalization(builder.Services.AddControllers());
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -23,6 +25,8 @@ namespace DotNet.Internationalization
             app.UseAuthorization();
 
             app.MapRazorPages();
+
+            app.UseInternationalization();
 
             app.Run();
         }
