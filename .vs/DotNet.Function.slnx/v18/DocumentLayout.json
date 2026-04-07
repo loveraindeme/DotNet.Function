@@ -3,8 +3,8 @@
   "WorkspaceRootPath": "C:\\Users\\Administrator\\source\\repos\\DotNet.Function\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{D891326B-FF3D-4D4B-8491-25682835E91B}|DotNet.Internationalization\\DotNet.Internationalization.csproj|c:\\users\\administrator\\source\\repos\\dotnet.function\\dotnet.internationalization\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D891326B-FF3D-4D4B-8491-25682835E91B}|DotNet.Internationalization\\DotNet.Internationalization.csproj|solutionrelative:dotnet.internationalization\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{E16A8C1F-056C-424F-D427-CD93C3AD6A3F}|DotNet.Internationalization\\DotNet.Internationalization.csproj|c:\\users\\administrator\\source\\repos\\dotnet.function\\dotnet.internationalization\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E16A8C1F-056C-424F-D427-CD93C3AD6A3F}|DotNet.Internationalization\\DotNet.Internationalization.csproj|solutionrelative:dotnet.internationalization\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -104,7 +104,7 @@
               "RelativeDocumentMoniker": "DotNet.Internationalization\\Program.cs",
               "ToolTip": "C:\\Users\\Administrator\\source\\repos\\DotNet.Function\\DotNet.Internationalization\\Program.cs",
               "RelativeToolTip": "DotNet.Internationalization\\Program.cs",
-              "ViewState": "AgIAAAIAAAAAAAAAAAAwwBEAAAANAAAAAAAAAA==",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAABEAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-04-07T02:51:59.047Z",
               "EditorCaption": ""
