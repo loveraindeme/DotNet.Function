@@ -23,7 +23,7 @@ namespace DotNet.Internationalization
 
         public static IApplicationBuilder UseInternationalization(this IApplicationBuilder app)
         {
-            var supportLanguages = new[] { "zh-Hans", "en-US" };
+            var supportLanguages = new[] { "zh-CN", "en-US" };
 
             // 设置文化和区域的默认值和支持的文化和区域列表
             var localizationOptions = new RequestLocalizationOptions()

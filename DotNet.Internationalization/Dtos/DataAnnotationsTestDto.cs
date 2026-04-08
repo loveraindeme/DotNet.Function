@@ -4,7 +4,7 @@ namespace DotNet.Internationalization.Dtos
 {
     public class DataAnnotationsTestDto
     {
-        [Length(2, 64, ErrorMessage = "name-length-limit")]
+        [StringLength(64, MinimumLength = 2, ErrorMessage = "name-length-limit")]
         public string Name { get; set; } = null!;
     }
 }

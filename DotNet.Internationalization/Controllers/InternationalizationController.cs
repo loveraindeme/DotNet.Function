@@ -5,6 +5,7 @@ using System.Globalization;
 
 namespace DotNet.Internationalization.Controllers
 {
+    [ApiController]
     [Route("api/[controller]")]
     public class InternationalizationController : Controller
     {
@@ -32,14 +33,6 @@ namespace DotNet.Internationalization.Controllers
         {
             var cultureNames = CultureInfo.GetCultures(CultureTypes.AllCultures).Select(culture => culture.Name);
             return cultureNames;
-        }
-
-        [HttpGet("manifest-resource")]
-        public IEnumerable<string> GetManifestResourceNames()
-        {
-            var assembly = typeof(MultiLanguage).Assembly;
-            var manifestResourceNames = assembly.GetManifestResourceNames();
-            return manifestResourceNames;
         }
 
         [HttpPost("name")]
