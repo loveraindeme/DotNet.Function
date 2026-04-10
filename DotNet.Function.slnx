@@ -1,3 +1,4 @@
 <Solution>
+  <Project Path="DotNet.FluentValidation/DotNet.FluentValidation.csproj" Id="1861c0c8-c71f-40c3-87cb-65e463932656" />
   <Project Path="DotNet.Internationalization/DotNet.Internationalization.csproj" />
 </Solution>
