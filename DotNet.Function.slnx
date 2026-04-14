@@ -1,4 +1,7 @@
 <Solution>
   <Project Path="DotNet.FluentValidation/DotNet.FluentValidation.csproj" Id="1861c0c8-c71f-40c3-87cb-65e463932656" />
   <Project Path="DotNet.Internationalization/DotNet.Internationalization.csproj" />
+  <Project Path="DotNet.SugarSqlCore/DotNet.SugarSqlCore.csproj" Id="c4aa3382-968d-4826-b4cb-63620560af56" />
+  <Project Path="SugarSqlCore.Abstraction/SugarSqlCore.Abstraction.csproj" Id="47e656b8-530b-4921-82e6-1d47224bb143" />
+  <Project Path="SugarSqlCore/SugarSqlCore.csproj" Id="017b475a-23be-4043-8d4e-3b2d088d97a8" />
 </Solution>
