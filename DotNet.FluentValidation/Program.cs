@@ -1,3 +1,6 @@
+using FluentValidation;
+using System.Reflection;
+
 namespace DotNet.FluentValidation
 {
     public class Program
@@ -8,6 +11,11 @@ namespace DotNet.FluentValidation
 
             // Add services to the container.
             builder.Services.AddRazorPages();
+            builder.Services.AddControllers();
+
+            builder.Services.AddFluentValidation();
+            var assembly = Assembly.GetExecutingAssembly();
+            builder.Services.AddValidatorsFromAssembly(assembly);
 
             var app = builder.Build();
 
