@@ -107,7 +107,7 @@ namespace SugarSqlCore
                 };
             }), dbContext =>
             {
-
+                dbContext.QueryFilter.AddTableFilter<IDeletionAuditedEntity>(entity => entity.IsDeleted == false);
             });
         }
 

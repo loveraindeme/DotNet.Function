@@ -10,6 +10,8 @@ namespace SugarSqlCore
         private const int BatchInsertUpdateCount = 1000;
         private readonly ISugarSqlDbContextProvider<ISugarSqlDbContext> _dbContextProvider;
 
+        public ISqlSugarClient SugarSqlClient => GetDbContext();
+
         public ISugarQueryable<TEntity> DbQueryable => GetDbContext().Queryable<TEntity>();
 
         public SugarSqlRepository(ISugarSqlDbContextProvider<ISugarSqlDbContext> dbContextProvider)
@@ -27,37 +29,37 @@ namespace SugarSqlCore
             return GetDbContext().GetSimpleClient<TEntity>();
         }
 
-        public async Task<ISugarQueryable<TEntity>> AsQueryableAsync()
+        public ISugarQueryable<TEntity> AsQueryable()
         {
             return GetDbSimpleClient().AsQueryable();
         }
 
-        public async Task<InsertNavTaskInit<TEntity, TEntity>> AsInsertNavAsync(TEntity entity)
+        public InsertNavTaskInit<TEntity, TEntity> AsInsertNav(TEntity entity)
         {
             return GetDbContext().InsertNav(entity);
         }
 
-        public async Task<InsertNavTaskInit<TEntity, TEntity>> AsInsertNavAsync(List<TEntity> entities)
+        public InsertNavTaskInit<TEntity, TEntity> AsInsertNav(List<TEntity> entities)
         {
             return GetDbContext().InsertNav(entities);
         }
 
-        public async Task<UpdateNavTaskInit<TEntity, TEntity>> AsUpdateNavAsync(TEntity entity)
+        public UpdateNavTaskInit<TEntity, TEntity> AsUpdateNav(TEntity entity)
         {
             return GetDbContext().UpdateNav(entity);
         }
 
-        public async Task<UpdateNavTaskInit<TEntity, TEntity>> AsUpdateNavAsync(List<TEntity> entities)
+        public UpdateNavTaskInit<TEntity, TEntity> AsUpdateNav(List<TEntity> entities)
         {
             return GetDbContext().UpdateNav(entities);
         }
 
-        public async Task<DeleteNavTaskInit<TEntity, TEntity>> AsDeleteNavAsync(TEntity entity)
+        public DeleteNavTaskInit<TEntity, TEntity> AsDeleteNav(TEntity entity)
         {
             return GetDbContext().DeleteNav(entity);
         }
 
-        public async Task<DeleteNavTaskInit<TEntity, TEntity>> AsDeleteNavAsync(List<TEntity> entities)
+        public DeleteNavTaskInit<TEntity, TEntity> AsDeleteNav(List<TEntity> entities)
         {
             return GetDbContext().DeleteNav(entities);
         }
@@ -165,7 +167,7 @@ namespace SugarSqlCore
 
         public async Task<bool> InsertIncludeAsync<TChildEntity>(TEntity entity, Expression<Func<TEntity, List<TChildEntity>>> includeExpression, InsertNavOptions? insertNavOptions = null) where TChildEntity : class, IEntity, new()
         {
-            var result = await (await AsInsertNavAsync(entity)).Include(includeExpression, insertNavOptions).ExecuteCommandAsync();
+            var result = await AsInsertNav(entity).Include(includeExpression, insertNavOptions).ExecuteCommandAsync();
             return result;
         }
 
@@ -211,7 +213,7 @@ namespace SugarSqlCore
                         .Skip(index)
                         .Take(takeCount)
                         .ToList();
-                    var partitionInsertResult = await (await AsInsertNavAsync(partitionEntities)).Include(includeExpression, insertNavOptions).ExecuteCommandAsync();
+                    var partitionInsertResult = await AsInsertNav(partitionEntities).Include(includeExpression, insertNavOptions).ExecuteCommandAsync();
                     if (partitionInsertResult)
                     {
                         num += partitionEntities.Count;
@@ -221,7 +223,7 @@ namespace SugarSqlCore
             }
             else
             {
-                await (await AsInsertNavAsync(entities)).Include(includeExpression, insertNavOptions).ExecuteCommandAsync();
+                await AsInsertNav(entities).Include(includeExpression, insertNavOptions).ExecuteCommandAsync();
                 num = entities.Count;
             }
             return num;
@@ -235,7 +237,7 @@ namespace SugarSqlCore
 
         public async Task<TEntity> InsertIncludeReturnAsync<TChildEntity>(TEntity entity, Expression<Func<TEntity, List<TChildEntity>>> includeExpression, InsertNavOptions? insertNavOptions = null) where TChildEntity : class, IEntity, new()
         {
-            var newEntity = await (await AsInsertNavAsync(entity)).Include(includeExpression, insertNavOptions).ExecuteReturnEntityAsync();
+            var newEntity = await AsInsertNav(entity).Include(includeExpression, insertNavOptions).ExecuteReturnEntityAsync();
             return newEntity;
         }
 
@@ -257,7 +259,7 @@ namespace SugarSqlCore
 
         public async Task<bool> UpdateIncludeAsync<TChildEntity>(TEntity entity, Expression<Func<TEntity, List<TChildEntity>>> includeExpression, UpdateNavOptions? updateNavOptions = null) where TChildEntity : class, IEntity, new()
         {
-            var result = await (await AsUpdateNavAsync(entity)).Include(includeExpression, updateNavOptions).ExecuteCommandAsync();
+            var result = await AsUpdateNav(entity).Include(includeExpression, updateNavOptions).ExecuteCommandAsync();
             return result;
         }
 
@@ -275,7 +277,7 @@ namespace SugarSqlCore
                         .Skip(index)
                         .Take(takeCount)
                         .ToList();
-                    var partitionInsertResult = await (await AsUpdateNavAsync(partitionEntities)).Include(includeExpression, updateNavOptions).ExecuteCommandAsync();
+                    var partitionInsertResult = await AsUpdateNav(partitionEntities).Include(includeExpression, updateNavOptions).ExecuteCommandAsync();
                     if (partitionInsertResult)
                     {
                         num += partitionEntities.Count;
@@ -286,7 +288,7 @@ namespace SugarSqlCore
             }
             else
             {
-                result = await (await AsUpdateNavAsync(entities)).Include(includeExpression, updateNavOptions).ExecuteCommandAsync();
+                result = await AsUpdateNav(entities).Include(includeExpression, updateNavOptions).ExecuteCommandAsync();
                 return result;
             }
             return result;
@@ -300,7 +302,7 @@ namespace SugarSqlCore
 
         public async Task<TEntity> UpdateIncludeReturnAsync<TChildEntity>(TEntity entity, Expression<Func<TEntity, List<TChildEntity>>> includeExpression, UpdateNavOptions? updateNavOptions = null) where TChildEntity : class, IEntity, new()
         {
-            await (await AsUpdateNavAsync(entity)).Include(includeExpression, updateNavOptions).ExecuteCommandAsync();
+            await AsUpdateNav(entity).Include(includeExpression, updateNavOptions).ExecuteCommandAsync();
             return entity;
         }
 
@@ -356,7 +358,6 @@ namespace SugarSqlCore
                 var result = await GetDbSimpleClient().DeleteAsync(expression, cancellationToken);
                 return result;
             }
-
         }
 
         #endregion
@@ -364,11 +365,9 @@ namespace SugarSqlCore
 
     public class SugarSqlRepository<TEntity, TKey> : SugarSqlRepository<TEntity>, ISugarSqlRepository<TEntity, TKey> where TEntity : class, IEntity<TKey>, new()
     {
-        private readonly ISugarSqlDbContextProvider<ISugarSqlDbContext> _dbContextProvider;
-
         public SugarSqlRepository(ISugarSqlDbContextProvider<ISugarSqlDbContext> dbContextProvider) : base(dbContextProvider)
         {
-            _dbContextProvider = dbContextProvider;
+
         }
 
         #region 查询
@@ -395,8 +394,9 @@ namespace SugarSqlCore
         {
             if (isSoftDelete && typeof(IDeletionAuditedEntity).IsAssignableFrom(typeof(TEntity)))
             {
+                var idColumn = GetDbContext().EntityMaintenance.GetDbColumnName<TEntity>(nameof(IEntity<TKey>.Id));
                 var result = await GetDbContext().Updateable<TEntity>()
-                    .Where(x => EqualityComparer<TKey>.Default.Equals(entity.Id, x.Id))
+                    .Where($"{idColumn} = @rowId", new { rowId = entity.Id })
                     .SetColumns("DeletionTime", DateTime.Now)
                     .SetColumns("DeleterId", CurrentUserAmbient.UserId)
                     .SetColumns("IsDeleted", true)
@@ -412,7 +412,7 @@ namespace SugarSqlCore
 
         public async Task<bool> DeleteIncludeAsync<TChildEntity>(TEntity entity, Expression<Func<TEntity, List<TChildEntity>>> includeExpression, DeleteNavOptions? deleteNavOptions = null) where TChildEntity : class, IEntity, new()
         {
-            var result = await (await AsDeleteNavAsync(entity)).Include(includeExpression, deleteNavOptions).ExecuteCommandAsync();
+            var result = await AsDeleteNav(entity).Include(includeExpression, deleteNavOptions).ExecuteCommandAsync();
             return result;
         }
 
@@ -437,7 +437,7 @@ namespace SugarSqlCore
 
         public async Task<bool> DeleteIncludeAsync<TChildEntity>(List<TEntity> entities, Expression<Func<TEntity, List<TChildEntity>>> includeExpression, DeleteNavOptions? deleteNavOptions = null) where TChildEntity : class, IEntity, new()
         {
-            var result = await (await AsDeleteNavAsync(entities)).Include(includeExpression, deleteNavOptions).ExecuteCommandAsync();
+            var result = await AsDeleteNav(entities).Include(includeExpression, deleteNavOptions).ExecuteCommandAsync();
             return result;
         }
 
@@ -445,8 +445,9 @@ namespace SugarSqlCore
         {
             if (isSoftDelete && typeof(IDeletionAuditedEntity).IsAssignableFrom(typeof(TEntity)))
             {
+                var idColumn = GetDbContext().EntityMaintenance.GetDbColumnName<TEntity>(nameof(IEntity<TKey>.Id));
                 var result = await GetDbContext().Updateable<TEntity>()
-                    .Where(x => EqualityComparer<TKey>.Default.Equals(id, x.Id))
+                    .Where($"{idColumn} = @rowId", new { rowId = id })
                     .SetColumns("DeletionTime", DateTime.Now)
                     .SetColumns("DeleterId", CurrentUserAmbient.UserId)
                     .SetColumns("IsDeleted", true)

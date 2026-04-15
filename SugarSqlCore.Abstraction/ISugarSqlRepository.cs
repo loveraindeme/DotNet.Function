@@ -6,6 +6,26 @@ namespace SugarSqlCore.Abstraction
 {
     public interface ISugarSqlRepository<TEntity> where TEntity : class, new()
     {
+        ISqlSugarClient SugarSqlClient { get; }
+
+        ISugarQueryable<TEntity> DbQueryable { get; }
+
+        ISqlSugarClient GetDbContext();
+
+        ISugarQueryable<TEntity> AsQueryable();
+
+        InsertNavTaskInit<TEntity, TEntity> AsInsertNav(TEntity entity);
+
+        InsertNavTaskInit<TEntity, TEntity> AsInsertNav(List<TEntity> entities);
+
+        UpdateNavTaskInit<TEntity, TEntity> AsUpdateNav(TEntity entity);
+
+        UpdateNavTaskInit<TEntity, TEntity> AsUpdateNav(List<TEntity> entities);
+
+        DeleteNavTaskInit<TEntity, TEntity> AsDeleteNav(TEntity entity);
+
+        DeleteNavTaskInit<TEntity, TEntity> AsDeleteNav(List<TEntity> entities);
+
         #region 查询
 
         Task<bool> AnyAsync();
@@ -24,7 +44,7 @@ namespace SugarSqlCore.Abstraction
 
         Task<TEntity> GetAsync(dynamic id, CancellationToken cancellationToken = default);
 
-        public Task<List<TEntity>> GetListIncludeAsync<TChildEntity>(Expression<Func<TEntity, List<TChildEntity>>> includeExpression, CancellationToken cancellationToken = default) where TChildEntity : class, new();
+        Task<List<TEntity>> GetListIncludeAsync<TChildEntity>(Expression<Func<TEntity, List<TChildEntity>>> includeExpression, CancellationToken cancellationToken = default) where TChildEntity : class, new();
 
         Task<List<TEntity>> GetListAsync(CancellationToken cancellationToken = default);
 
@@ -84,9 +104,9 @@ namespace SugarSqlCore.Abstraction
     {
         #region 查询
 
-        public Task<TEntity?> FindByIdAsync(TKey id, CancellationToken cancellationToken = default);
+        Task<TEntity?> FindByIdAsync(TKey id, CancellationToken cancellationToken = default);
 
-        public Task<TEntity> GetByIdAsync(TKey id, CancellationToken cancellationToken = default);
+        Task<TEntity> GetByIdAsync(TKey id, CancellationToken cancellationToken = default);
 
         #endregion
 
@@ -100,17 +120,17 @@ namespace SugarSqlCore.Abstraction
 
         #region 删除
 
-        public Task<bool> DeleteAsync(TEntity entity, bool isSoftDelete = true, CancellationToken cancellationToken = default);
+        Task<bool> DeleteAsync(TEntity entity, bool isSoftDelete = true, CancellationToken cancellationToken = default);
 
-        public Task<bool> DeleteIncludeAsync<TChildEntity>(TEntity entity, Expression<Func<TEntity, List<TChildEntity>>> includeExpression, DeleteNavOptions? deleteNavOptions = null) where TChildEntity : class, IEntity, new();
+        Task<bool> DeleteIncludeAsync<TChildEntity>(TEntity entity, Expression<Func<TEntity, List<TChildEntity>>> includeExpression, DeleteNavOptions? deleteNavOptions = null) where TChildEntity : class, IEntity, new();
 
-        public Task<bool> DeleteAsync(List<TEntity> entities, bool isSoftDelete = true, CancellationToken cancellationToken = default);
+        Task<bool> DeleteAsync(List<TEntity> entities, bool isSoftDelete = true, CancellationToken cancellationToken = default);
 
-        public Task<bool> DeleteIncludeAsync<TChildEntity>(List<TEntity> entities, Expression<Func<TEntity, List<TChildEntity>>> includeExpression, DeleteNavOptions? deleteNavOptions = null) where TChildEntity : class, IEntity, new();
+        Task<bool> DeleteIncludeAsync<TChildEntity>(List<TEntity> entities, Expression<Func<TEntity, List<TChildEntity>>> includeExpression, DeleteNavOptions? deleteNavOptions = null) where TChildEntity : class, IEntity, new();
 
-        public Task<bool> DeleteByIdAsync(TKey id, bool isSoftDelete = true, CancellationToken cancellationToken = default);
+        Task<bool> DeleteByIdAsync(TKey id, bool isSoftDelete = true, CancellationToken cancellationToken = default);
 
-        public Task<bool> DeleteByIdAsync(List<TKey> ids, bool isSoftDelete = true, CancellationToken cancellationToken = default);
+        Task<bool> DeleteByIdAsync(List<TKey> ids, bool isSoftDelete = true, CancellationToken cancellationToken = default);
 
         #endregion
     }
