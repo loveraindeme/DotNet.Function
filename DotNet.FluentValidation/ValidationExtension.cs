@@ -9,9 +9,9 @@ namespace DotNet.FluentValidation
     {
         public static IServiceCollection AddFluentValidation(this IServiceCollection services)
         {
-            // 多个属性的多个规则的级联行为Stop，在验证属性的规则失败时，不继续验证其他属性的规则
+            // 多个规则的多个校验者的级联行为Stop，在规则中有校验者执行失败时，不继续执行其他规则的校验者
             ValidatorOptions.Global.DefaultClassLevelCascadeMode = CascadeMode.Stop;
-            // 单个属性的多个规则的级联行为Stop，在验证属性的规则失败时，不继续验证当前属性的其他规则
+            // 单个规则的多个校验者的级联行为Stop，在规则中有校验者执行失败时，不继续执行当前规则的其他校验者
             ValidatorOptions.Global.DefaultRuleLevelCascadeMode = CascadeMode.Stop;
             services.AddFluentValidationAutoValidation(fv =>
             {
