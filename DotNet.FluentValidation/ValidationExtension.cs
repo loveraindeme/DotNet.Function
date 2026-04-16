@@ -5,7 +5,7 @@ using System.Runtime.Loader;
 
 namespace DotNet.FluentValidation
 {
-    public static class ValidationExtensions
+    public static class ValidationExtension
     {
         public static IServiceCollection AddFluentValidation(this IServiceCollection services)
         {
