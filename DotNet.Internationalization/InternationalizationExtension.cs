@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Localization.Routing;
+﻿using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Localization.Routing;
 using Microsoft.Extensions.Localization;
 
 namespace DotNet.Internationalization
@@ -13,7 +14,7 @@ namespace DotNet.Internationalization
                 var localizer = sp.GetRequiredService<IStringLocalizer<MultiLanguage>>();
                 return localizer;
             });
-            // 配置数据注解的本地化
+            // 配置数据注解的本地化资源文件来源
             mvcBuilder.AddDataAnnotationsLocalization(options =>
             {
                 options.DataAnnotationLocalizerProvider = (type, factory) =>
@@ -50,6 +51,49 @@ namespace DotNet.Internationalization
             app.UseRequestLocalization(localizationOptions);
 
             return app;
+        }
+    }
+
+    public class AppSettingsRequestCultureProvider : RequestCultureProvider
+    {
+        public string CultureKey { get; set; } = "Localization:Culture";
+
+        public string UICultureKey { get; set; } = "Localization:UICulture";
+
+        public override Task<ProviderCultureResult?> DetermineProviderCultureResult(HttpContext httpContext)
+        {
+            if (httpContext == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            string? culture = null;
+            string? uiCulture = null;
+            var configuration = httpContext.RequestServices.GetService<IConfigurationRoot>();
+            if (configuration != null)
+            {
+                culture = configuration[CultureKey];
+                uiCulture = configuration[UICultureKey];
+            }
+            
+            if (culture == null && uiCulture == null)
+            {
+                return Task.FromResult((ProviderCultureResult?)null);
+            }
+
+            if (culture != null && uiCulture == null)
+            {
+                uiCulture = culture;
+            }
+
+            if (culture == null && uiCulture != null)
+            {
+                culture = uiCulture;
+            }
+
+            var providerResultCulture = new ProviderCultureResult(culture, uiCulture);
+
+            return Task.FromResult((ProviderCultureResult?)providerResultCulture);
         }
     }
 }
