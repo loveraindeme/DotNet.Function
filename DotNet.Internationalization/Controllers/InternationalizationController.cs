@@ -1,4 +1,5 @@
 ﻿using DotNet.Internationalization.Dtos;
+using DotNet.Internationalization.Resources;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using System.Globalization;

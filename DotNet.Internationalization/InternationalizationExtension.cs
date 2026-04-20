@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Localization;
+﻿using DotNet.Internationalization.Resources;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Localization.Routing;
 using Microsoft.Extensions.Localization;
 
@@ -48,6 +49,11 @@ namespace DotNet.Internationalization
                 RouteDataStringKey = "culture",
                 UIRouteDataStringKey = "ui-culture"
             });
+            // localizationOptions.RequestCultureProviders.Clear();
+            localizationOptions.RequestCultureProviders.Add(new AppSettingsRequestCultureProvider()
+            {
+                Options = localizationOptions
+            });
             app.UseRequestLocalization(localizationOptions);
 
             return app;
@@ -69,7 +75,7 @@ namespace DotNet.Internationalization
 
             string? culture = null;
             string? uiCulture = null;
-            var configuration = httpContext.RequestServices.GetService<IConfigurationRoot>();
+            var configuration = httpContext.RequestServices.GetService<IConfiguration>();
             if (configuration != null)
             {
                 culture = configuration[CultureKey];

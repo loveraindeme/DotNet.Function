@@ -8,7 +8,7 @@ namespace DotNet.Internationalization
 
             // Add services to the container.
             builder.Services.AddRazorPages();
-
+            
             var mvcBuilder = builder.Services.AddControllers();
             builder.Services.AddInternationalization(mvcBuilder);
 
