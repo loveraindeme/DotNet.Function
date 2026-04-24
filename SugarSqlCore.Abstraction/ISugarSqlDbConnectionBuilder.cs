@@ -2,7 +2,7 @@
 
 namespace SugarSqlCore.Abstraction
 {
-    public interface ISugarSqlDbConnectionCreator
+    public interface ISugarSqlDbConnectionBuilder
     {
         ConnectionConfig Build(Action<ConnectionConfig>? action = null);
     }

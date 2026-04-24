@@ -9,7 +9,7 @@ namespace SugarSqlCore
         {
             services.AddOptions();
             services.Configure(configureOptions);
-            services.AddTransient<ISugarSqlDbConnectionCreator, SugarSqlDbConnectionCreator>();
+            services.AddTransient<ISugarSqlDbConnectionBuilder, SugarSqlDbConnectionBuilder>();
             services.AddScoped<ISugarSqlDbContext, SugarSqlDbContext>();
             services.AddTransient(typeof(ISugarSqlDbContextProvider<>), typeof(SugarSqlDbContextProvider<>));
             services.AddTransient(typeof(ISugarSqlRepository<>), typeof(SugarSqlRepository<>));

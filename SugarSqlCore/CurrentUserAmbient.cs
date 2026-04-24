@@ -1,24 +1,29 @@
 ﻿namespace SugarSqlCore
 {
-    public class CurrentUserAmbient
+    public class CurrentUserAmbient : CurrentUserAmbient<Guid>
     {
-        private static readonly AsyncLocal<Guid?> UserIdHolder = new();
 
-        public static Guid? UserId => Get();
+    }
 
-        public static Guid? Get()
+    public class CurrentUserAmbient<TKey>
+    {
+        private static readonly AsyncLocal<TKey?> UserIdHolder = new();
+
+        public static TKey? UserId => Get();
+
+        public static TKey? Get()
         {
             return UserIdHolder.Value;
         }
 
-        public static void Set(Guid? userId)
+        public static void Set(TKey? userId)
         {
             UserIdHolder.Value = userId;
         }
 
         public static void Clear()
         {
-            UserIdHolder.Value = null;
+            UserIdHolder.Value = default;
         }
     }
 }

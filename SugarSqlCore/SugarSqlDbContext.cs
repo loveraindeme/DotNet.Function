@@ -15,7 +15,7 @@ namespace SugarSqlCore
         public SugarSqlDbContext(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
-            var dbConnectionCreator = _serviceProvider.GetRequiredService<ISugarSqlDbConnectionCreator>();
+            var dbConnectionBuilder = _serviceProvider.GetRequiredService<ISugarSqlDbConnectionBuilder>();
             var dbConnectionOptions = _serviceProvider.GetRequiredService<IOptions<DbConnectionOptions>>().Value;
 
             DbType dbType;
@@ -41,7 +41,7 @@ namespace SugarSqlCore
                     break;
             }
 
-            SugarSqlClient = new SqlSugarClient(dbConnectionCreator.Build(options =>
+            SugarSqlClient = new SqlSugarClient(dbConnectionBuilder.Build(options =>
             {
                 options.DbType = dbType;
                 options.ConnectionString = dbConnectionOptions.ConnectionString;

@@ -89,6 +89,7 @@ namespace SugarSqlCore.Abstraction
         Task<TEntity> UpdateReturnAsync(TEntity entity, CancellationToken cancellationToken = default);
 
         Task<TEntity> UpdateIncludeReturnAsync<TChildEntity>(TEntity entity, Expression<Func<TEntity, List<TChildEntity>>> expression, UpdateNavOptions? updateNavOptions = null) where TChildEntity : class, IEntity, new();
+        
         Task<bool> UpdateRangeAsync(List<TEntity> entities, CancellationToken cancellationToken = default);
 
         #endregion

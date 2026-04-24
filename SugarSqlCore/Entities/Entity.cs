@@ -9,7 +9,7 @@ namespace SugarSqlCore.Entities
 
         }
 
-        public abstract object?[] GetKeys();
+        public abstract object? GetKeys();
     }
 
     public abstract class Entity<TKey> : Entity, IEntity<TKey>
@@ -26,9 +26,9 @@ namespace SugarSqlCore.Entities
             Id = id;
         }
 
-        public override object?[] GetKeys()
+        public override object? GetKeys()
         {
-            return [Id];
+            return Id;
         }
     }
 }

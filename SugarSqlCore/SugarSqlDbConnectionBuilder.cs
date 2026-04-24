@@ -3,9 +3,9 @@ using SugarSqlCore.Abstraction;
 
 namespace SugarSqlCore
 {
-    public class SugarSqlDbConnectionCreator : ISugarSqlDbConnectionCreator
+    public class SugarSqlDbConnectionBuilder : ISugarSqlDbConnectionBuilder
     {
-        public SugarSqlDbConnectionCreator() 
+        public SugarSqlDbConnectionBuilder() 
         {
         
         }

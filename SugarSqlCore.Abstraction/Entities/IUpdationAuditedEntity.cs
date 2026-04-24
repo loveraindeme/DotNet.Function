@@ -6,4 +6,11 @@
 
         DateTime? LastModificationTime { get; set; }
     }
+
+    public interface IUpdationAuditedEntity<TKey>
+    {
+        TKey? LastModifierId { get; set; }
+
+        DateTime? LastModificationTime { get; set; }
+    }
 }

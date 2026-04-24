@@ -8,4 +8,11 @@ namespace SugarSqlCore.Entities
 
         public DateTime? LastModificationTime { get; set; }
     }
+
+    public class UpdationAuditedEntity<TKey> : IUpdationAuditedEntity<TKey>
+    {
+        public TKey? LastModifierId { get; set; }
+
+        public DateTime? LastModificationTime { get; set; }
+    }
 }
