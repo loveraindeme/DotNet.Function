@@ -10,7 +10,12 @@ namespace DotNet.OpenVersion
             builder.Services.AddRazorPages();
             builder.Services.AddControllers();
 
-            builder.Services.AddOpenApi();
+            builder.Services.AddOutputCache(options =>
+            {
+                options.AddBasePolicy(policy => policy.Expire(TimeSpan.FromMinutes(60)));
+            });
+
+            builder.Services.AddOpenApi("external");
 
             var app = builder.Build();
 
@@ -23,9 +28,10 @@ namespace DotNet.OpenVersion
 
             app.UseRouting();
 
+            app.UseOutputCache();
             if (app.Environment.IsDevelopment())
             {
-                app.MapOpenApi();
+                app.MapOpenApi("/openapi/{documentName}.json").CacheOutput();
             }
 
             app.UseAuthorization();
