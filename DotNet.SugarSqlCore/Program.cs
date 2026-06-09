@@ -29,13 +29,15 @@ namespace DotNet.SugarSqlCore
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
-            if (!app.Environment.IsDevelopment())
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseSwagger();
+                app.UseSwaggerUI();
+            }
+            else
             {
                 app.UseExceptionHandler("/Error");
             }
-
-            app.UseSwagger();
-            app.UseSwaggerUI();
 
             app.UseStaticFiles();
 
