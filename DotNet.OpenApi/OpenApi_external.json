@@ -1,0 +1,186 @@
+{
+  "openapi": "3.1.1",
+  "info": {
+    "title": "DotNet.OpenApi | external",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/api/Common/current-time": {
+      "get": {
+        "tags": [
+          "Common"
+        ],
+        "summary": "Get current time.",
+        "description": "Returns the current server time in UTC.",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Register/register-ball": {
+      "post": {
+        "tags": [
+          "Register"
+        ],
+        "parameters": [
+          {
+            "name": "ball",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/Ball"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/External/random-number": {
+      "get": {
+        "tags": [
+          "External"
+        ],
+        "summary": "Get random number.",
+        "description": "Generates a random number within the specified range.",
+        "parameters": [
+          {
+            "name": "minNumber",
+            "in": "query",
+            "schema": {
+              "pattern": "^-?(?:0|[1-9]\\d*)$",
+              "type": [
+                "integer",
+                "string"
+              ],
+              "format": "int32"
+            }
+          },
+          {
+            "name": "maxNumber",
+            "in": "query",
+            "schema": {
+              "pattern": "^-?(?:0|[1-9]\\d*)$",
+              "type": [
+                "integer",
+                "string"
+              ],
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "pattern": "^-?(?:0|[1-9]\\d*)$",
+                      "type": [
+                        "null",
+                        "integer",
+                        "string"
+                      ],
+                      "format": "int32"
+                    }
+                  ]
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "pattern": "^-?(?:0|[1-9]\\d*)$",
+                      "type": [
+                        "null",
+                        "integer",
+                        "string"
+                      ],
+                      "format": "int32"
+                    }
+                  ]
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "pattern": "^-?(?:0|[1-9]\\d*)$",
+                      "type": [
+                        "null",
+                        "integer",
+                        "string"
+                      ],
+                      "format": "int32"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Ball": {
+        "enum": [
+          "Basketball",
+          "Football",
+          "Volleyball",
+          "Golfball",
+          "Tennis",
+          "Billiards",
+          "Badminton"
+        ]
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Common"
+    },
+    {
+      "name": "Register"
+    },
+    {
+      "name": "External"
+    }
+  ]
+}
