@@ -6,6 +6,7 @@
   <Project Path="DotNet.OpenApi/DotNet.OpenApi.csproj" Id="ad2881f3-ef8c-4b5e-8b20-e93e42bc5cd8" />
   <Project Path="DotNet.Quartz/DotNet.Quartz.csproj" Id="104e0e52-eb2c-41d6-b0a8-4a05dac2ba38" />
   <Project Path="DotNet.SugarSqlCore/DotNet.SugarSqlCore.csproj" Id="c4aa3382-968d-4826-b4cb-63620560af56" />
+  <Project Path="DotNet.VersionControl/DotNet.VersionControl.csproj" Id="37f4344c-d6c6-40d6-bab2-dec0845cdea7" />
   <Project Path="SugarSqlCore.Abstraction/SugarSqlCore.Abstraction.csproj" Id="47e656b8-530b-4921-82e6-1d47224bb143" />
   <Project Path="SugarSqlCore/SugarSqlCore.csproj" Id="017b475a-23be-4043-8d4e-3b2d088d97a8" />
 </Solution>
