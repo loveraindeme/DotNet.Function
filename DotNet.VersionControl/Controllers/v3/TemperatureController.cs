@@ -5,7 +5,7 @@ namespace DotNet.VersionControl.Controllers.v3
 {
     [ApiController]
     [ApiVersion("3.0")]
-    [Route("api/{version:apiVersion}/[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public class TemperatureController : ControllerBase
     {
         [HttpGet]

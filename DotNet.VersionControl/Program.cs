@@ -15,7 +15,6 @@ namespace DotNet.VersionControl
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 
-            builder.Services.AddProblemDetails();
             builder.Services.AddApiVersioning(options =>
             {
                 // 默认版本为1.0
@@ -35,12 +34,12 @@ namespace DotNet.VersionControl
                     new UrlSegmentApiVersionReader());
             }).AddApiExplorer(options =>
             {
-                // OpenApi文档组名格式
+                // 文档组名格式
                 options.GroupNameFormat = "'v'VVV";
-                // OpenApi文档中将版本占位符替换成具体版本号
+                // 文档中将版本占位符替换成具体版本号 
                 options.SubstituteApiVersionInUrl = true;
-                // 版本占位符替换格式
-                options.SubstitutionFormat = "'v'VVV";
+                // 文档中版本占位符替换格式
+                options.SubstitutionFormat = "VVV";
             });
 
             builder.Services.AddEndpointsApiExplorer();

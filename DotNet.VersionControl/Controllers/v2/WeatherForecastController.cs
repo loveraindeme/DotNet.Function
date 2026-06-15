@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 namespace DotNet.VersionControl.Controllers.v2
 {
     [ApiController]
-    [ApiVersion("2.0")]
+    [ApiVersion(2.0, status: "Alpha")]
     [ApiVersion("3.0")]
-    [Route("api/{version:apiVersion}/[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public class WeatherForecastController : ControllerBase
     {
         private static readonly string[] Summaries =
@@ -14,7 +14,7 @@ namespace DotNet.VersionControl.Controllers.v2
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         ];
 
-        [MapToApiVersion("2.0")]
+        [MapToApiVersion(2.0, status: "Alpha")]
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()
         {
