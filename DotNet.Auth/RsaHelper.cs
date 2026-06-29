@@ -13,7 +13,7 @@ namespace DotNet.Auth
         {
             if (keySize < 2048)
             {
-                throw new ArgumentOutOfRangeException(nameof(keySize), "RSA密钥长度不能小于2048");
+                throw new ArgumentOutOfRangeException(nameof(keySize), "RSA秘钥长度不能小于2048");
             }
 
             using var rsa = RSA.Create(keySize);

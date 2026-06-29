@@ -25,7 +25,7 @@
         public string SigningAlgorithm { get; set; } = string.Empty;
 
         /// <summary>
-        /// 默认签名密钥
+        /// 默认签名秘钥
         /// </summary>
         public string SignureSecretKey { get; set; } = string.Empty;
 

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.IdentityModel.Tokens.Jwt;
@@ -20,6 +21,7 @@ namespace DotNet.Auth
 
             builder.Services.AddSingleton<RefreshTokenContainer>();
             builder.Services.AddSingleton<CustomJwtBearerEvents>();
+            builder.Services.AddSingleton<UserPermissionContainer>();
 
             ConfigureAuthentication(builder.Services, builder.Configuration);
             ConfigureAuthorization(builder.Services);
@@ -154,6 +156,9 @@ namespace DotNet.Auth
         private static void ConfigureAuthorization(IServiceCollection services)
         {
             services.AddAuthorization();
+
+            services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
+            services.AddSingleton<IAuthorizationMiddlewareResultHandler, AuthorizationResultHandler>();
         }
     }
 }

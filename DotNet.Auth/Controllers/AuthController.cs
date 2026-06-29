@@ -16,12 +16,15 @@ namespace DotNet.Auth.Controllers
     {
         private readonly JwtOptions _jwtOptions;
         private readonly RefreshTokenContainer _refreshTokenContainer;
+        private readonly UserPermissionContainer _userPermissionContainer;
 
         public AuthController(IOptions<JwtOptions> jwtOptions,
-            RefreshTokenContainer refreshTokenContainer)
+            RefreshTokenContainer refreshTokenContainer,
+            UserPermissionContainer userPermissionContainer)
         {
             _jwtOptions = jwtOptions.Value;
             _refreshTokenContainer = refreshTokenContainer;
+            _userPermissionContainer = userPermissionContainer;
         }
 
         [HttpPost("login")]
@@ -42,6 +45,9 @@ namespace DotNet.Auth.Controllers
             var (refreshTokenId, refreshToken) = GeneratedRefreshToken(user);
             var accessToken = GeneratedAccessToken(user, refreshTokenId);
 
+            // 模拟获取用户权限，并存储在内存缓存中
+            _userPermissionContainer.Set($"{user.Id}&{refreshTokenId}", ["user:list"]);
+
             return new TokenDto
             {
                 AccessToken = accessToken,
@@ -58,6 +64,7 @@ namespace DotNet.Auth.Controllers
             if (!string.IsNullOrEmpty(userId) && !string.IsNullOrEmpty(refreshTokenId))
             {
                 _refreshTokenContainer.Remove($"{userId}&{refreshTokenId}");
+                _userPermissionContainer.Remove($"{userId}&{refreshTokenId}");
             }
         }
 
