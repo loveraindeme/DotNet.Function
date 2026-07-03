@@ -16,14 +16,13 @@ namespace DotNet.Auth
             PermissionAuthorizeAttribute requirement)
         {
             var userId = context.User.FindFirst(AuthClaimTypes.UserId)?.Value;
-            var refreshTokenId = context.User.FindFirst(AuthClaimTypes.RefreshTokenId)?.Value;
             if (userId == null || !Guid.TryParse(userId, out _))
             {
                 return;
             }
 
             // 模拟获取用户的权限码列表
-            if (!_userPermissionContainer.TryGet($"{userId}&{refreshTokenId}", out List<string>? permissionCodes))
+            if (!_userPermissionContainer.TryGet($"{userId}&permission", out List<string>? permissionCodes))
             {
                 return;
             }

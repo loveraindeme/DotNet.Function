@@ -46,7 +46,7 @@ namespace DotNet.Auth.Controllers
             var accessToken = GeneratedAccessToken(user, refreshTokenId);
 
             // 模拟获取用户权限，并存储在内存缓存中
-            _userPermissionContainer.Set($"{user.Id}&{refreshTokenId}", ["user:list"]);
+            _userPermissionContainer.Set($"{user.Id}&permission", ["user:list"]);
 
             return new TokenDto
             {
@@ -64,7 +64,7 @@ namespace DotNet.Auth.Controllers
             if (!string.IsNullOrEmpty(userId) && !string.IsNullOrEmpty(refreshTokenId))
             {
                 _refreshTokenContainer.Remove($"{userId}&{refreshTokenId}");
-                _userPermissionContainer.Remove($"{userId}&{refreshTokenId}");
+                _userPermissionContainer.Remove($"{userId}&permission");
             }
         }
 
@@ -72,15 +72,15 @@ namespace DotNet.Auth.Controllers
         [AllowAnonymous]
         public async Task<TokenDto> RefreshTokenAsync(RefreshTokenCreateDto input)
         {
-            var claims = ValidateAndAnalysisToken(input.AccessToken);
-            if (claims == null)
+            var claimsPrincipal = ValidateAndAnalysisToken(input.AccessToken);
+            if (claimsPrincipal == null)
             {
                 throw new BadHttpRequestException("无效的访问令牌");
             }
 
-            var userId = claims.FirstOrDefault(claim => claim.Type == AuthClaimTypes.UserId)?.Value;
-            var refreshTokenId = claims.FirstOrDefault(claim => claim.Type == AuthClaimTypes.RefreshTokenId)?.Value;
-            var account = claims.FirstOrDefault(claim => claim.Type == AuthClaimTypes.UserAccount)?.Value;
+            var userId = claimsPrincipal.FindFirst(AuthClaimTypes.UserId)?.Value;
+            var refreshTokenId = claimsPrincipal.FindFirst(AuthClaimTypes.RefreshTokenId)?.Value;
+            var account = claimsPrincipal.FindFirst(AuthClaimTypes.UserAccount)?.Value;
 
             var refreshTokeKey = $"{userId}&{refreshTokenId}";
             var canRefresh = _refreshTokenContainer.TryGet(refreshTokeKey, out string? refreshToken);
@@ -156,7 +156,7 @@ namespace DotNet.Auth.Controllers
             return new SigningCredentials(new SymmetricSecurityKey(symmetricSecurityKey), SecurityAlgorithms.HmacSha256);
         }
 
-        private List<Claim>? ValidateAndAnalysisToken(string token)
+        private ClaimsPrincipal? ValidateAndAnalysisToken(string token)
         {
             try
             {
@@ -165,7 +165,7 @@ namespace DotNet.Auth.Controllers
                 var encryptSecurityKey = Encoding.UTF8.GetBytes(_jwtOptions.EncryptSecretKey);
 
                 var securityTokenHandler = new JwtSecurityTokenHandler();
-                securityTokenHandler.ValidateToken(token, new TokenValidationParameters()
+                var claimsPrincipal = securityTokenHandler.ValidateToken(token, new TokenValidationParameters()
                 {
                     ValidTypes = [JwtConstants.HeaderType],
                     ValidAlgorithms = [SecurityAlgorithms.HmacSha256, SecurityAlgorithms.RsaSha256, SecurityAlgorithms.Aes128CbcHmacSha256],
@@ -187,16 +187,9 @@ namespace DotNet.Auth.Controllers
 
                     RequireExpirationTime = true,
                     RequireSignedTokens = true,
-                }, out SecurityToken securityToken);
+                }, out SecurityToken _);
 
-                if (securityToken is JwtSecurityToken jwtSecurityToken)
-                {
-                    return jwtSecurityToken.Claims.ToList();
-                }
-                else
-                {
-                    return null;
-                }
+                return claimsPrincipal;
             }
             catch (Exception)
             {
