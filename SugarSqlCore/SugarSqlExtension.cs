@@ -5,7 +5,7 @@ namespace SugarSqlCore
 {
     public static class SugarSqlExtension
     {
-        public static void AddSugarSql(this IServiceCollection services, Action<DbConnectionOptions> configureOptions)
+        public static IServiceCollection AddSugarSql(this IServiceCollection services, Action<DbConnectionOptions> configureOptions)
         {
             services.AddOptions();
             services.Configure(configureOptions);
@@ -14,6 +14,8 @@ namespace SugarSqlCore
             services.AddTransient(typeof(ISugarSqlDbContextProvider<>), typeof(SugarSqlDbContextProvider<>));
             services.AddTransient(typeof(ISugarSqlRepository<>), typeof(SugarSqlRepository<>));
             services.AddTransient(typeof(ISugarSqlRepository<,>), typeof(SugarSqlRepository<,>));
+
+            return services;
         }
     }
 }
