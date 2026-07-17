@@ -43,74 +43,120 @@ namespace EFCore
             return entities;
         }
 
-        public TEntity Add(TEntity entity)
+        public TEntity Add(TEntity entity, bool autoSave = false)
         {
             DbSet.Add(entity);
+            if (autoSave)
+            {
+                EFCoreDbContext.SaveChanges();
+            }
             return entity;
         }
 
-        public async Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken = default)
+        public async Task<TEntity> AddAsync(TEntity entity, bool autoSave = false, CancellationToken cancellationToken = default)
         {
             await DbSet.AddAsync(entity, cancellationToken);
+            if (autoSave)
+            {
+                await EFCoreDbContext.SaveChangesAsync(cancellationToken);
+            }
             return entity;
         }
 
-        public List<TEntity> Add(List<TEntity> entities)
+        public List<TEntity> Add(List<TEntity> entities, bool autoSave = false)
         {
             DbSet.AddRange(entities);
+            if (autoSave)
+            {
+                EFCoreDbContext.SaveChanges();
+            }
             return entities;
         }
 
-        public async Task<List<TEntity>> AddAsync(List<TEntity> entities, CancellationToken cancellationToken = default)
+        public async Task<List<TEntity>> AddAsync(List<TEntity> entities, bool autoSave = false, CancellationToken cancellationToken = default)
         {
             await DbSet.AddRangeAsync(entities, cancellationToken);
+            if (autoSave)
+            {
+                await EFCoreDbContext.SaveChangesAsync(cancellationToken);
+            }
             return entities;
         }
 
-        public TEntity Update(TEntity entity)
+        public TEntity Update(TEntity entity, bool autoSave = false)
         {
             DbSet.Update(entity);
+            if (autoSave)
+            {
+                EFCoreDbContext.SaveChanges();
+            }
             return entity;
         }
 
-        public Task<TEntity> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
+        public async Task<TEntity> UpdateAsync(TEntity entity, bool autoSave = false, CancellationToken cancellationToken = default)
         {
             DbSet.Update(entity);
-            return Task.FromResult(entity);
+            if (autoSave)
+            {
+                await EFCoreDbContext.SaveChangesAsync(cancellationToken);
+            }
+            return entity;
         }
 
-        public List<TEntity> Update(List<TEntity> entities)
+        public List<TEntity> Update(List<TEntity> entities, bool autoSave = false)
         {
             DbSet.UpdateRange(entities);
+            if (autoSave)
+            {
+                EFCoreDbContext.SaveChanges();
+            }
             return entities;
         }
 
-        public Task<List<TEntity>> UpdateAsync(List<TEntity> entities, CancellationToken cancellationToken = default)
+        public async Task<List<TEntity>> UpdateAsync(List<TEntity> entities, bool autoSave = false, CancellationToken cancellationToken = default)
         {
             DbSet.UpdateRange(entities);
-            return Task.FromResult(entities);
+            if (autoSave)
+            {
+                await EFCoreDbContext.SaveChangesAsync(cancellationToken);
+            }
+            return entities;
         }
 
-        public void Remove(TEntity entity)
+        public void Remove(TEntity entity, bool autoSave = false)
         {
             DbSet.Remove(entity);
+            if (autoSave)
+            {
+                EFCoreDbContext.SaveChanges();
+            }
         }
 
-        public Task RemoveAsync(TEntity entity, CancellationToken cancellationToken = default)
+        public async Task RemoveAsync(TEntity entity, bool autoSave = false, CancellationToken cancellationToken = default)
         {
             DbSet.Remove(entity);
-            return Task.CompletedTask;
+            if (autoSave)
+            {
+                await EFCoreDbContext.SaveChangesAsync(cancellationToken);
+            }
         }
 
-        public void Remove(List<TEntity> entities)
+        public void Remove(List<TEntity> entities, bool autoSave = false)
         {
             DbSet.RemoveRange(entities);
+            if (autoSave)
+            {
+                EFCoreDbContext.SaveChanges();
+            }
         }
 
-        public Task RemoveAsync(List<TEntity> entities, CancellationToken cancellationToken = default)
+        public async Task RemoveAsync(List<TEntity> entities, bool autoSave = false, CancellationToken cancellationToken = default)
         {
             DbSet.RemoveRange(entities);
-            return Task.CompletedTask;
+            if (autoSave)
+            {
+                await EFCoreDbContext.SaveChangesAsync(cancellationToken);
+            }
         }
     }
 
@@ -134,7 +180,7 @@ namespace EFCore
             return entity;
         }
 
-        public bool Remove(TKey id)
+        public bool Remove(TKey id, bool autoSave = false)
         {
             var entity = DbSet.Find(id);
             if (entity == null)
@@ -142,10 +188,14 @@ namespace EFCore
                 return false;
             }
             DbSet.Remove(entity);
+            if (autoSave)
+            {
+                EFCoreDbContext.SaveChanges();
+            }
             return true;
         }
 
-        public async Task<bool> RemoveAsync(TKey id, CancellationToken cancellationToken = default)
+        public async Task<bool> RemoveAsync(TKey id, bool autoSave = false, CancellationToken cancellationToken = default)
         {
             var entity = await DbSet.FindAsync([id], cancellationToken: cancellationToken);
             if (entity == null)
@@ -153,10 +203,14 @@ namespace EFCore
                 return false;
             }
             DbSet.Remove(entity);
+            if (autoSave)
+            {
+                await EFCoreDbContext.SaveChangesAsync(cancellationToken);
+            }
             return true;
         }
 
-        public bool Remove(List<TKey> ids)
+        public bool Remove(List<TKey> ids, bool autoSave = false)
         {
             var entities = DbSet.Where(e => ids.Contains(e.Id)).ToList();
             if (entities.Count == 0)
@@ -164,10 +218,14 @@ namespace EFCore
                 return false;
             }
             DbSet.RemoveRange(entities);
+            if (autoSave)
+            {
+                EFCoreDbContext.SaveChanges();
+            }
             return true;
         }
 
-        public async Task<bool> RemoveAsync(List<TKey> ids, CancellationToken cancellationToken = default)
+        public async Task<bool> RemoveAsync(List<TKey> ids, bool autoSave = false, CancellationToken cancellationToken = default)
         {
             var entities = await DbSet.Where(e => ids.Contains(e.Id)).ToListAsync(cancellationToken: cancellationToken);
             if (entities.Count == 0)
@@ -175,6 +233,10 @@ namespace EFCore
                 return false;
             }
             DbSet.RemoveRange(entities);
+            if (autoSave)
+            {
+                await EFCoreDbContext.SaveChangesAsync(cancellationToken);
+            }
             return true;
         }
     }

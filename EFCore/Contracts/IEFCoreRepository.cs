@@ -17,29 +17,29 @@ namespace EFCore.Contracts
 
         Task<List<TEntity>> GetListAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default);
 
-        TEntity Add(TEntity entity);
+        TEntity Add(TEntity entity, bool autoSave = false);
 
-        Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken = default);
+        Task<TEntity> AddAsync(TEntity entity, bool autoSave = false, CancellationToken cancellationToken = default);
 
-        List<TEntity> Add(List<TEntity> entities);
+        List<TEntity> Add(List<TEntity> entities, bool autoSave = false);
 
-        Task<List<TEntity>> AddAsync(List<TEntity> entities, CancellationToken cancellationToken = default);
+        Task<List<TEntity>> AddAsync(List<TEntity> entities, bool autoSave = false, CancellationToken cancellationToken = default);
 
-        TEntity Update(TEntity entity);
+        TEntity Update(TEntity entity, bool autoSave = false);
 
-        Task<TEntity> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default);
+        Task<TEntity> UpdateAsync(TEntity entity, bool autoSave = false, CancellationToken cancellationToken = default);
 
-        List<TEntity> Update(List<TEntity> entities);
+        List<TEntity> Update(List<TEntity> entities, bool autoSave = false);
 
-        Task<List<TEntity>> UpdateAsync(List<TEntity> entities, CancellationToken cancellationToken = default);
+        Task<List<TEntity>> UpdateAsync(List<TEntity> entities, bool autoSave = false, CancellationToken cancellationToken = default);
 
-        void Remove(TEntity entity);
+        void Remove(TEntity entity, bool autoSave = false);
 
-        Task RemoveAsync(TEntity entity, CancellationToken cancellationToken = default);
+        Task RemoveAsync(TEntity entity, bool autoSave = false, CancellationToken cancellationToken = default);
 
-        void Remove(List<TEntity> entities);
+        void Remove(List<TEntity> entities, bool autoSave = false);
 
-        Task RemoveAsync(List<TEntity> entities, CancellationToken cancellationToken = default);
+        Task RemoveAsync(List<TEntity> entities, bool autoSave = false, CancellationToken cancellationToken = default);
     }
 
     public interface IEFCoreRepository<TEntity, TKey> : IEFCoreRepository<TEntity> where TEntity : class, IEntity<TKey>, new()
@@ -48,12 +48,12 @@ namespace EFCore.Contracts
 
         Task<TEntity?> GetAsync(TKey id, CancellationToken cancellationToken = default);
 
-        bool Remove(TKey id);
+        bool Remove(TKey id, bool autoSave = false);
 
-        Task<bool> RemoveAsync(TKey id, CancellationToken cancellationToken = default);
+        Task<bool> RemoveAsync(TKey id, bool autoSave = false, CancellationToken cancellationToken = default);
 
-        bool Remove(List<TKey> ids);
+        bool Remove(List<TKey> ids, bool autoSave = false);
 
-        Task<bool> RemoveAsync(List<TKey> ids, CancellationToken cancellationToken = default);
+        Task<bool> RemoveAsync(List<TKey> ids, bool autoSave = false, CancellationToken cancellationToken = default);
     }
 }
