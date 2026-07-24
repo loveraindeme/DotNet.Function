@@ -66,11 +66,11 @@ namespace EFCore
             try
             {
                 _dbContext.SaveChanges();
-                _currentTransaction!.Commit();
+                _currentTransaction.Commit();
             }
             catch
             {
-                _currentTransaction?.Rollback();
+                _currentTransaction.Rollback();
                 throw;
             }
             finally
@@ -95,14 +95,11 @@ namespace EFCore
             try
             {
                 await _dbContext.SaveChangesAsync(cancellationToken);
-                await _currentTransaction!.CommitAsync(cancellationToken);
+                await _currentTransaction.CommitAsync(cancellationToken);
             }
             catch
             {
-                if (_currentTransaction != null)
-                {
-                    await _currentTransaction.RollbackAsync(cancellationToken);
-                }
+                await _currentTransaction.RollbackAsync(cancellationToken);
                 throw;
             }
             finally
@@ -114,9 +111,14 @@ namespace EFCore
         public void Rollback()
         {
             ThrowIfDisposed();
+            if (_currentTransaction == null)
+            {
+                throw new InvalidOperationException("No active transaction exists.");
+            }
+
             try
             {
-                _currentTransaction?.Rollback();
+                _currentTransaction.Rollback();
             }
             finally
             {
@@ -127,13 +129,14 @@ namespace EFCore
         public async Task RollbackAsync(CancellationToken cancellationToken = default)
         {
             ThrowIfDisposed();
+            if (_currentTransaction == null)
+            {
+                throw new InvalidOperationException("No active transaction exists.");
+            }
 
             try
             {
-                if (_currentTransaction != null)
-                {
-                    await _currentTransaction.RollbackAsync(cancellationToken);
-                }
+                await _currentTransaction.RollbackAsync(cancellationToken);
             }
             finally
             {
@@ -155,10 +158,7 @@ namespace EFCore
             }
             catch
             {
-                if (_currentTransaction != null)
-                {
-                    _currentTransaction.Rollback();
-                }
+                _currentTransaction?.Rollback();
                 DisposeTransaction();
                 throw;
             }
@@ -179,7 +179,7 @@ namespace EFCore
             }
             catch
             {
-                TryRollback();
+                _currentTransaction?.Rollback();
                 DisposeTransaction();
                 throw;
             }
@@ -255,7 +255,7 @@ namespace EFCore
 
             if (_currentTransaction != null)
             {
-                TryRollback();
+                _currentTransaction?.Rollback();
                 DisposeTransaction();
             }
 
@@ -278,18 +278,6 @@ namespace EFCore
 
             _disposed = true;
             GC.SuppressFinalize(this);
-        }
-
-        private void TryRollback()
-        {
-            try
-            {
-                
-            }
-            catch
-            {
-                // 保留导致提交失败的原始异常。
-            }
         }
 
         private void DisposeTransaction()

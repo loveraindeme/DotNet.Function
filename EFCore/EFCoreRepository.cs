@@ -1,4 +1,4 @@
-﻿using EFCore.Contracts;
+using EFCore.Contracts;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
@@ -43,7 +43,7 @@ namespace EFCore
             return entities;
         }
 
-        public TEntity Add(TEntity entity, bool autoSave = false)
+        public TEntity Add(TEntity entity, bool autoSave = true)
         {
             DbSet.Add(entity);
             if (autoSave)
@@ -53,7 +53,7 @@ namespace EFCore
             return entity;
         }
 
-        public async Task<TEntity> AddAsync(TEntity entity, bool autoSave = false, CancellationToken cancellationToken = default)
+        public async Task<TEntity> AddAsync(TEntity entity, bool autoSave = true, CancellationToken cancellationToken = default)
         {
             await DbSet.AddAsync(entity, cancellationToken);
             if (autoSave)
@@ -63,7 +63,7 @@ namespace EFCore
             return entity;
         }
 
-        public List<TEntity> Add(List<TEntity> entities, bool autoSave = false)
+        public List<TEntity> Add(List<TEntity> entities, bool autoSave = true)
         {
             DbSet.AddRange(entities);
             if (autoSave)
@@ -73,7 +73,7 @@ namespace EFCore
             return entities;
         }
 
-        public async Task<List<TEntity>> AddAsync(List<TEntity> entities, bool autoSave = false, CancellationToken cancellationToken = default)
+        public async Task<List<TEntity>> AddAsync(List<TEntity> entities, bool autoSave = true, CancellationToken cancellationToken = default)
         {
             await DbSet.AddRangeAsync(entities, cancellationToken);
             if (autoSave)
@@ -83,7 +83,7 @@ namespace EFCore
             return entities;
         }
 
-        public TEntity Update(TEntity entity, bool autoSave = false)
+        public TEntity Update(TEntity entity, bool autoSave = true)
         {
             DbSet.Update(entity);
             if (autoSave)
@@ -93,7 +93,7 @@ namespace EFCore
             return entity;
         }
 
-        public async Task<TEntity> UpdateAsync(TEntity entity, bool autoSave = false, CancellationToken cancellationToken = default)
+        public async Task<TEntity> UpdateAsync(TEntity entity, bool autoSave = true, CancellationToken cancellationToken = default)
         {
             DbSet.Update(entity);
             if (autoSave)
@@ -103,7 +103,7 @@ namespace EFCore
             return entity;
         }
 
-        public List<TEntity> Update(List<TEntity> entities, bool autoSave = false)
+        public List<TEntity> Update(List<TEntity> entities, bool autoSave = true)
         {
             DbSet.UpdateRange(entities);
             if (autoSave)
@@ -113,7 +113,7 @@ namespace EFCore
             return entities;
         }
 
-        public async Task<List<TEntity>> UpdateAsync(List<TEntity> entities, bool autoSave = false, CancellationToken cancellationToken = default)
+        public async Task<List<TEntity>> UpdateAsync(List<TEntity> entities, bool autoSave = true, CancellationToken cancellationToken = default)
         {
             DbSet.UpdateRange(entities);
             if (autoSave)
@@ -123,7 +123,7 @@ namespace EFCore
             return entities;
         }
 
-        public void Remove(TEntity entity, bool autoSave = false)
+        public void Remove(TEntity entity, bool autoSave = true)
         {
             DbSet.Remove(entity);
             if (autoSave)
@@ -132,7 +132,7 @@ namespace EFCore
             }
         }
 
-        public async Task RemoveAsync(TEntity entity, bool autoSave = false, CancellationToken cancellationToken = default)
+        public async Task RemoveAsync(TEntity entity, bool autoSave = true, CancellationToken cancellationToken = default)
         {
             DbSet.Remove(entity);
             if (autoSave)
@@ -141,7 +141,7 @@ namespace EFCore
             }
         }
 
-        public void Remove(List<TEntity> entities, bool autoSave = false)
+        public void Remove(List<TEntity> entities, bool autoSave = true)
         {
             DbSet.RemoveRange(entities);
             if (autoSave)
@@ -150,7 +150,7 @@ namespace EFCore
             }
         }
 
-        public async Task RemoveAsync(List<TEntity> entities, bool autoSave = false, CancellationToken cancellationToken = default)
+        public async Task RemoveAsync(List<TEntity> entities, bool autoSave = true, CancellationToken cancellationToken = default)
         {
             DbSet.RemoveRange(entities);
             if (autoSave)
@@ -180,7 +180,7 @@ namespace EFCore
             return entity;
         }
 
-        public bool Remove(TKey id, bool autoSave = false)
+        public bool Remove(TKey id, bool autoSave = true)
         {
             var entity = DbSet.Find(id);
             if (entity == null)
@@ -195,7 +195,7 @@ namespace EFCore
             return true;
         }
 
-        public async Task<bool> RemoveAsync(TKey id, bool autoSave = false, CancellationToken cancellationToken = default)
+        public async Task<bool> RemoveAsync(TKey id, bool autoSave = true, CancellationToken cancellationToken = default)
         {
             var entity = await DbSet.FindAsync([id], cancellationToken: cancellationToken);
             if (entity == null)
@@ -210,7 +210,7 @@ namespace EFCore
             return true;
         }
 
-        public bool Remove(List<TKey> ids, bool autoSave = false)
+        public bool Remove(List<TKey> ids, bool autoSave = true)
         {
             var entities = DbSet.Where(e => ids.Contains(e.Id)).ToList();
             if (entities.Count == 0)
@@ -225,7 +225,7 @@ namespace EFCore
             return true;
         }
 
-        public async Task<bool> RemoveAsync(List<TKey> ids, bool autoSave = false, CancellationToken cancellationToken = default)
+        public async Task<bool> RemoveAsync(List<TKey> ids, bool autoSave = true, CancellationToken cancellationToken = default)
         {
             var entities = await DbSet.Where(e => ids.Contains(e.Id)).ToListAsync(cancellationToken: cancellationToken);
             if (entities.Count == 0)

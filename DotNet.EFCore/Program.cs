@@ -21,6 +21,7 @@ namespace DotNet.EFCore
             builder.Services.AddEFCore<AppDbContext>(optionsBuilder =>
             {
                 optionsBuilder.UseMySql(connectionString, MySqlServerVersion.LatestSupportedServerVersion);
+                // optionsBuilder.UseMySql(connectionString, MySqlServerVersion.LatestSupportedServerVersion, options => options.MigrationsAssembly("EFCore"));
                 optionsBuilder
                     .ConfigureWarnings(options => options.Ignore(CoreEventId.SensitiveDataLoggingEnabledWarning))
                     .LogTo(
